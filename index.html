@@ -340,14 +340,26 @@
    340|
    341|<script>
    342|// ─── DATA ────────────────────────────────────────────
-   343|const STATIONS = [
-   344|  { name: '化城寺', time: '8:30 - 9:10', purpose: '综合祈福、求平安、求财运基础、化解太岁', offer: '建议供奉苹果、橙子、香蕉', tags: ['化太岁'] },
-   345|  { name: '旃檀林（华严宝殿）', time: '9:20 - 10:20', purpose: '求事业、智慧、财运', offer: '可供奉橙子', tags: [] },
-   346|  { name: '肉身宝殿', time: '10:30 - 11:30', purpose: '求全家健康平安、消灾延寿、化解太岁', offer: '建议供奉苹果、橙子、香蕉', tags: ['化太岁'] },
-   347|  { name: '通慧禅林', time: '11:30 - 12:00', purpose: '求女性健康平安、化解太岁（女性首选）', offer: '可供奉苹果', tags: ['化太岁'] },
-   348|  { name: '百岁宫', time: '13:00 - 14:30', purpose: '求长寿、健康、事业顺遂', offer: '可供奉苹果', tags: [] },
-   349|  { name: '天台寺', time: '15:00 - 16:30', purpose: '求事业登高、大愿成就', offer: '无需供奉', tags: [] },
-   350|];
+const STATIONS = [
+  { name: '化城寺', time: '8:30 - 9:10', purpose: '综合祈福、求平安、求财运基础、化解太岁', offer: '建议供奉苹果、橙子、香蕉', tags: ['化太岁'],
+    prayerWH: '弟子王昊与未婚妻王仪冉，今日恭敬参拜化城寺。祈愿佛菩萨慈悲护佑，家人身体康健、平安顺遂；弟子事业亨通、财源广进。',
+    prayerWYR: '弟子王仪冉，生于农历2002年二月十八，今年正逢本命年，值太岁兼刑太岁，祈求菩萨加持，令弟子流年顺遂，消灾解厄，化险为夷，身体健康，事事如意。' },
+  { name: '旃檀林（华严宝殿）', time: '9:20 - 10:20', purpose: '求事业、智慧、财运', offer: '可供奉橙子', tags: [],
+    prayerWH: '弟子王昊与未婚妻王仪冉，恭敬参拜华严三圣。祈愿佛菩萨加持，令弟子事业精进、智慧增长、财运亨通。',
+    prayerWYR: '弟子王仪冉恭敬参拜华严三圣。祈愿佛菩萨加持，令弟子事业顺遂、智慧圆满、财运广进。' },
+  { name: '肉身宝殿', time: '10:30 - 11:30', purpose: '求全家健康平安、消灾延寿、化解太岁', offer: '建议供奉苹果、橙子、香蕉', tags: ['化太岁'],
+    prayerWH: '弟子王昊与未婚妻王仪冉，恭敬参拜地藏王菩萨真身宝殿。祈愿菩萨大慈大悲，护佑父母亲眷及我等身体健康、无病无灾、消灾延寿。',
+    prayerWYR: '弟子王仪冉，恭敬参拜地藏王菩萨真身宝殿。祈求菩萨加持，化解弟子本命年太岁与刑太岁之不利影响，护佑弟子平安吉祥、身体康健。' },
+  { name: '通慧禅林', time: '11:30 - 12:00', purpose: '求女性健康平安、化解太岁（女性首选）', offer: '可供奉苹果', tags: ['化太岁'],
+    prayerWH: '弟子王昊，恭敬参拜仁义师太真身。祈愿师太慈悲，护佑未婚妻王仪冉身体健康、平安吉祥。',
+    prayerWYR: '弟子王仪冉，恭敬参拜仁义师太真身。祈愿师太慈悲，护佑弟子身体健康，消灾解厄，化解本命年刑太岁之不利，平安吉祥。' },
+  { name: '百岁宫', time: '13:00 - 14:30', purpose: '求长寿、健康、事业顺遂', offer: '可供奉苹果', tags: [],
+    prayerWH: '弟子王昊与未婚妻王仪冉，恭敬参拜无瑕和尚真身。祈愿和尚慈悲，护佑我等福寿绵长、事业顺遂。',
+    prayerWYR: '弟子王仪冉，恭敬参拜无瑕和尚真身。祈愿和尚慈悲，护佑弟子福寿绵长、事业顺遂、身体康健。' },
+  { name: '天台寺', time: '15:00 - 16:30', purpose: '求事业登高、大愿成就', offer: '无需供奉', tags: [],
+    prayerWH: '弟子王昊与未婚妻王仪冉，恭敬参拜天台寺佛菩萨。祈愿菩萨加持，令弟子事业步步高升、宏愿得偿。',
+    prayerWYR: '弟子王仪冉，恭敬参拜天台寺佛菩萨。祈愿菩萨加持，令弟子事业步步高升、心想事成。' },
+];
    351|
    352|const PEOPLE = {
    353|  wanghao: {
@@ -356,8 +368,8 @@
    356|    showWarning: true
    357|  },
    358|  wangyiran: {
-   359|    name: '王仪冉', birth: '生于农历 1995年十二月十五', zodiac: '属马 · 值太岁兼刑太岁，需重点化解',
-   360|    warning: '2026年值太岁兼刑太岁，运势低迷需谨慎。请务必在化城寺、肉身宝殿、通慧禅林虔诚祈福化解。',
+    name: '王仪冉', birth: '生于农历 2002年二月十八', zodiac: '属马 · 值太岁兼刑太岁，需重点化解',
+    warning: '您（属马）在2026年值太岁兼刑太岁，需重点化解。请在化城寺、肉身宝殿、通慧禅林重点祈福。',
    361|    showWarning: true
    362|  }
    363|};
@@ -416,8 +428,10 @@
    416|  const p = ps();
    417|  container.innerHTML = STATIONS.map((s, i) => {
    418|    const done = p.completed.includes(i);
-   419|    const selfPrayer = p.selfPrayers[i] || '';
-   420|    const partnerPrayer = p.partnerPrayers[i] || '';
+    const selfDefault = currentPerson === 'wanghao' ? s.prayerWH : s.prayerWYR;
+    const partnerDefault = currentPerson === 'wanghao' ? s.prayerWYR : s.prayerWH;
+    const selfPrayer = p.selfPrayers[i] || selfDefault;
+    const partnerPrayer = p.partnerPrayers[i] || partnerDefault;
    421|    return `
    422|      <div class="card station-card" style="${done ? 'opacity:0.85' : ''}">
    423|        <div class="station-header">
@@ -509,7 +523,10 @@
    509|  modalPrayerType = type;
    510|  const s = STATIONS[idx];
    511|  const p = ps();
-   512|  const existing = type === 'self' ? (p.selfPrayers[idx] || '') : (p.partnerPrayers[idx] || '');
+   512|  const defaultText = currentPerson === 'wanghao'
+    ? (type === 'self' ? s.prayerWH : s.prayerWYR)
+    : (type === 'self' ? s.prayerWYR : s.prayerWH);
+  const existing = type === 'self' ? (p.selfPrayers[idx] || defaultText) : (p.partnerPrayers[idx] || defaultText);
    513|  document.getElementById('modalTitle').textContent = type === 'self' ? '💙 您的祈愿' : '💕 伴侣的祈愿';
    514|  document.getElementById('modalStation').textContent = s.name + ' · ' + s.time;
    515|  document.getElementById('prayerText').value = existing;
