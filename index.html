@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>九华山祈福打卡手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf7f4;
+    --fg: #3d3730;
+    --card: #fdfcf9;
+    --card-fg: #3d3730;
+    --muted: #ede8e2;
+    --muted-fg: #8c857c;
+    --accent: #C4734E;
+    --accent-fg: #fff;
+    --accent-light: rgba(196,115,78,0.08);
+    --accent-border: rgba(196,115,78,0.25);
+    --border: #e4ded6;
+    --radius: 0.5rem;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+  }
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Noto Serif SC', serif; font-weight: 600; }
+
+  /* Header */
+  .header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--card); border-bottom: 1px solid var(--border);
+    padding: 1rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    backdrop-filter: blur(8px);
+  }
+  .header-inner { text-align: center; }
+  .header h1 { font-size: 1.75rem; color: var(--accent); margin-bottom: 0.25rem; }
+  .header .date { font-size: 0.85rem; color: var(--muted-fg); }
+  .toggle-group {
+    display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.75rem;
+  }
+  .toggle-btn {
+    padding: 0.5rem 1rem; border-radius: var(--radius); font-size: 0.9rem;
+    font-weight: 500; border: none; cursor: pointer; transition: all 0.2s;
+    font-family: inherit; background: var(--muted); color: var(--fg);
+  }
+  .toggle-btn.active { background: var(--accent); color: var(--accent-fg); }
+  .toggle-btn:not(.active):hover { background: var(--border); }
+
+  /* Main */
+  .container { max-width: 480px; margin: 0 auto; padding: 1rem 1rem 5rem; }
+
+  /* Cards */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem;
+    box-shadow: var(--shadow); transition: all 0.3s;
+    margin-bottom: 0.75rem;
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+
+  /* Person Card */
+  .person-card { background: var(--accent-light); border-color: var(--accent-border); text-align: center; }
+  .person-card h2 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
+  .person-card .info { font-size: 0.85rem; color: var(--fg); opacity: 0.8; }
+
+  /* Highlight box */
+  .highlight {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-light);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.75rem 1rem; margin-bottom: 0.5rem;
+  }
+  .highlight.warning { border-color: #d44; background: rgba(220,68,68,0.06); }
+  .highlight.warning h3 { color: #c33; }
+  .highlight h3 { font-size: 0.9rem; margin-bottom: 0.25rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+  .highlight p { font-size: 0.82rem; color: var(--fg); opacity: 0.85; line-height: 1.5; }
+  .highlight .icon { font-size: 1rem; flex-shrink: 0; }
+
+  /* Progress */
+  .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; margin: 0.5rem 0; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.4s ease; }
+  .progress-text { font-size: 0.8rem; color: var(--muted-fg); }
+
+  /* Tabs */
+  .tabs {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    background: var(--muted); border-radius: var(--radius); padding: 3px;
+    margin-bottom: 1rem;
+  }
+  .tab-btn {
+    padding: 0.5rem; border-radius: calc(var(--radius) - 2px);
+    font-size: 0.85rem; font-weight: 500; border: none; cursor: pointer;
+    transition: all 0.2s; font-family: inherit; text-align: center;
+    background: transparent; color: var(--fg);
+  }
+  .tab-btn.active { background: var(--card); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+  .tab-btn:not(.active):hover { color: var(--accent); }
+
+  /* Station Card */
+  .station-card .station-header {
+    display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;
+  }
+  .station-num {
+    width: 2.5rem; height: 2.5rem; border-radius: 50%;
+    background: var(--accent-light); display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 700; color: var(--accent); font-size: 1rem; flex-shrink: 0;
+  }
+  .station-num.done { background: var(--accent); color: var(--accent-fg); }
+  .station-info { flex: 1; }
+  .station-info h3 { font-size: 1rem; margin-bottom: 0.15rem; }
+  .station-time {
+    font-size: 0.8rem; color: var(--muted-fg); margin-bottom: 0.25rem;
+    display: flex; align-items: center; gap: 0.35rem;
+  }
+  .station-purpose { font-size: 0.8rem; color: var(--fg); opacity: 0.75; }
+  .station-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .tag {
+    font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 999px;
+    background: var(--accent-light); color: var(--accent); font-weight: 500;
+  }
+  .tag.tai sui { background: rgba(220,68,68,0.08); color: #c33; }
+  .station-offer { font-size: 0.78rem; color: var(--muted-fg); margin-top: 0.4rem; }
+
+  /* Prayer buttons */
+  .prayer-section { margin-top: 0.75rem; border-top: 1px solid var(--border); padding-top: 0.75rem; }
+  .prayer-btn {
+    display: block; width: 100%; text-align: left; padding: 0.6rem 0.75rem;
+    margin-bottom: 0.4rem; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--bg); cursor: pointer; font-family: inherit; transition: all 0.2s;
+  }
+  .prayer-btn:hover { border-color: var(--accent); }
+  .prayer-btn h4 { font-size: 0.85rem; margin-bottom: 0.15rem; }
+  .prayer-btn p { font-size: 0.78rem; color: var(--muted-fg); }
+  .prayer-btn.done { border-color: var(--accent); background: var(--accent-light); }
+  .prayer-btn.done h4::after { content: ' ✓'; color: var(--accent); }
+
+  /* Complete button */
+  .complete-btn {
+    display: block; width: 100%; padding: 0.6rem; margin-top: 0.75rem;
+    border: 2px dashed var(--border); border-radius: var(--radius);
+    background: transparent; cursor: pointer; font-family: inherit;
+    font-size: 0.85rem; font-weight: 500; color: var(--muted-fg);
+    transition: all 0.2s;
+  }
+  .complete-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .complete-btn.done {
+    border-style: solid; border-color: var(--accent);
+    background: var(--accent-light); color: var(--accent);
+  }
+  .complete-btn.done::before { content: '✓ '; }
+
+  /* Tips */
+  .tip-item {
+    display: flex; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+  }
+  .tip-item:last-child { border-bottom: none; }
+  .tip-num {
+    width: 2.2rem; height: 2.2rem; border-radius: 50%;
+    background: var(--accent-light); display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 700; color: var(--accent); font-size: 0.9rem; flex-shrink: 0;
+  }
+  .tip-content { font-size: 0.85rem; line-height: 1.6; flex: 1; padding-top: 0.3rem; }
+
+  /* Timeline */
+  .tl-item {
+    display: flex; gap: 1rem; padding: 0.75rem 0 0.75rem 0;
+    position: relative;
+  }
+  .tl-num {
+    width: 2.5rem; height: 2.5rem; border-radius: 50%;
+    background: var(--accent-light); display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 700; color: var(--accent); font-size: 1rem; flex-shrink: 0;
+    z-index: 1;
+  }
+  .tl-content { flex: 1; }
+  .tl-content h3 { font-size: 1rem; margin-bottom: 0.1rem; }
+  .tl-time { font-size: 0.8rem; color: var(--muted-fg); margin-bottom: 0.15rem; }
+  .tl-desc { font-size: 0.82rem; color: var(--fg); opacity: 0.75; }
+
+  /* Prayer modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+    z-index: 100; display: flex; align-items: flex-end; justify-content: center;
+    padding: 1rem;
+  }
+  .modal {
+    background: var(--card); border-radius: var(--radius) var(--radius) 0 0;
+    width: 100%; max-width: 480px; padding: 1.5rem 1.25rem 2rem;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+  .modal textarea {
+    width: 100%; min-height: 120px; padding: 0.75rem;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    font-family: inherit; font-size: 0.9rem; resize: vertical;
+    background: var(--bg);
+  }
+  .modal textarea:focus { outline: none; border-color: var(--accent); }
+  .modal-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  .btn {
+    flex: 1; padding: 0.6rem; border-radius: var(--radius);
+    font-family: inherit; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-fg); }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { background: var(--muted); color: var(--fg); }
+  .btn-secondary:hover { background: var(--border); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    background: var(--fg); color: #fff; padding: 0.6rem 1.25rem;
+    border-radius: 999px; font-size: 0.85rem; z-index: 200;
+    animation: fadeInUp 0.3s ease;
+    pointer-events: none;
+  }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+  .hidden { display: none !important; }
+
+  @media (min-width: 640px) {
+    .container { padding: 1.5rem 1.5rem 5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <h1>🏔️ 九华山祈福打卡</h1>
+    <p class="date" id="dateDisplay">2026年5月6日 · 丙午年三月二十</p>
+    <div class="toggle-group">
+      <button class="toggle-btn active" data-person="wanghao" onclick="switchPerson('wanghao')">💙 王昊版</button>
+      <button class="toggle-btn" data-person="wangyiran" onclick="switchPerson('wangyiran')">💕 王仪冉版</button>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+  <!-- Person Info -->
+  <div class="card person-card" id="personCard">
+    <h2 id="personName">王昊</h2>
+    <p class="info" id="personBirth">生于农历 1995年七月初一</p>
+    <p class="info" id="personZodiac">属猪 · 不犯太岁，运势平稳</p>
+  </div>
+
+  <!-- Warnings & Info -->
+  <div class="highlight warning" id="warningBox">
+    <h3><span class="icon">⚠️</span> 女方犯太岁提醒</h3>
+    <p id="warningText">您的未婚妻王仪冉（属马）在2026年值太岁兼刑太岁，需重点化解。请在化城寺、肉身宝殿、通慧禅林重点祈福。</p>
+  </div>
+
+  <div class="highlight">
+    <h3><span class="icon">📍</span> 今日吉时</h3>
+    <p>丙子（23-1）、丁丑（1-3）、己卯（5-7）、壬午（11-13）、甲申（15-17）、乙酉（17-19）</p>
+  </div>
+
+  <div class="highlight">
+    <h3><span class="icon">🍎</span> 供果建议</h3>
+    <p>准备两份相同供果分别供奉在化城寺和肉身宝殿。苹果寓意平安，橙子寓意事业有成，香蕉寓意招财。</p>
+  </div>
+
+  <div class="highlight">
+    <h3><span class="icon">📋</span> 参拜礼仪</h3>
+    <p>进殿前脱帽，不戴墨镜。烧香时双手持香举过眉心。拜佛时可行跪拜礼。大殿内勿拍照。</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+      <span style="font-size:0.9rem;font-weight:500">今日进度</span>
+      <span id="progressPercent" style="font-size:1.1rem;font-weight:700;color:var(--accent)">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <p class="progress-text" id="progressLabel">已完成 0 / 6 站</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('stations')">📍 打卡站点</button>
+    <button class="tab-btn" onclick="switchTab('tips')">🙏 祈福提示</button>
+    <button class="tab-btn" onclick="switchTab('timeline')">🕐 时间表</button>
+  </div>
+
+  <!-- Tab: Stations -->
+  <div id="tab-stations"></div>
+
+  <!-- Tab: Tips -->
+  <div id="tab-tips" class="hidden">
+    <div class="card">
+      <div class="tip-item"><div class="tip-num">1</div><div class="tip-content">祈福最重'心诚'，心怀恭敬方能感应。</div></div>
+      <div class="tip-item"><div class="tip-num">2</div><div class="tip-content">许愿后应放下执念，随缘自在。</div></div>
+      <div class="tip-item"><div class="tip-num">3</div><div class="tip-content">供果参拜结束后可留给寺庙工作人员，广结善缘。</div></div>
+      <div class="tip-item"><div class="tip-num">4</div><div class="tip-content">女性在生理期不建议跪拜，可在殿外合掌祈福。</div></div>
+      <div class="tip-item"><div class="tip-num">5</div><div class="tip-content">山上气温较低，备好保暖外套。</div></div>
+      <div class="tip-item"><div class="tip-num">6</div><div class="tip-content">一日行程紧凑，合理分配体力。</div></div>
+    </div>
+  </div>
+
+  <!-- Tab: Timeline -->
+  <div id="tab-timeline" class="hidden"></div>
+</main>
+
+<!-- Prayer Modal -->
+<div class="modal-overlay hidden" id="prayerModal">
+  <div class="modal">
+    <h3 id="modalTitle">💙 您的祈愿</h3>
+    <p style="font-size:0.8rem;color:var(--muted-fg);margin-bottom:0.5rem" id="modalStation"></p>
+    <textarea id="prayerText" placeholder="写下您的祈愿..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="savePrayer()">保存祈愿</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast hidden" id="toast"></div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────
+const STATIONS = [
+  { name: '化城寺', time: '8:30 - 9:10', purpose: '综合祈福、求平安、求财运基础、化解太岁', offer: '建议供奉苹果、橙子、香蕉', tags: ['化太岁'] },
+  { name: '旃檀林（华严宝殿）', time: '9:20 - 10:20', purpose: '求事业、智慧、财运', offer: '可供奉橙子', tags: [] },
+  { name: '肉身宝殿', time: '10:30 - 11:30', purpose: '求全家健康平安、消灾延寿、化解太岁', offer: '建议供奉苹果、橙子、香蕉', tags: ['化太岁'] },
+  { name: '通慧禅林', time: '11:30 - 12:00', purpose: '求女性健康平安、化解太岁（女性首选）', offer: '可供奉苹果', tags: ['化太岁'] },
+  { name: '百岁宫', time: '13:00 - 14:30', purpose: '求长寿、健康、事业顺遂', offer: '可供奉苹果', tags: [] },
+  { name: '天台寺', time: '15:00 - 16:30', purpose: '求事业登高、大愿成就', offer: '无需供奉', tags: [] },
+];
+
+const PEOPLE = {
+  wanghao: {
+    name: '王昊', birth: '生于农历 1995年七月初一', zodiac: '属猪 · 不犯太岁，运势平稳',
+    warning: '您的未婚妻王仪冉（属马）在2026年值太岁兼刑太岁，需重点化解。请在化城寺、肉身宝殿、通慧禅林重点祈福。',
+    showWarning: true
+  },
+  wangyiran: {
+    name: '王仪冉', birth: '生于农历 1995年十二月十五', zodiac: '属马 · 值太岁兼刑太岁，需重点化解',
+    warning: '2026年值太岁兼刑太岁，运势低迷需谨慎。请务必在化城寺、肉身宝殿、通慧禅林虔诚祈福化解。',
+    showWarning: true
+  }
+};
+
+// ─── STATE ───────────────────────────────────────────
+const KEY = 'jiuhua_pilgrimage_state';
+let state = loadState();
+let currentPerson = state.currentPerson || 'wanghao';
+let currentTab = 'stations';
+let modalStationIdx = null;
+let modalPrayerType = null; // 'self' or 'partner'
+
+function defaultState() {
+  return {
+    currentPerson: 'wanghao',
+    wanghao: { completed: [], selfPrayers: {}, partnerPrayers: {} },
+    wangyiran: { completed: [], selfPrayers: {}, partnerPrayers: {} }
+  };
+}
+
+function loadState() {
+  try { const s = localStorage.getItem(KEY); return s ? {...defaultState(), ...JSON.parse(s)} : defaultState(); }
+  catch(e) { return defaultState(); }
+}
+
+function saveState() {
+  state.currentPerson = currentPerson;
+  localStorage.setItem(KEY, JSON.stringify(state));
+}
+
+function ps() { return state[currentPerson]; }
+
+// ─── RENDER ──────────────────────────────────────────
+function renderAll() {
+  renderPerson();
+  renderStations();
+  renderTimeline();
+  updateProgress();
+}
+
+function renderPerson() {
+  const p = PEOPLE[currentPerson];
+  document.getElementById('personName').textContent = p.name;
+  document.getElementById('personBirth').textContent = p.birth;
+  document.getElementById('personZodiac').textContent = p.zodiac;
+  document.getElementById('warningText').textContent = p.warning;
+  document.getElementById('warningBox').classList.toggle('hidden', !p.showWarning);
+
+  document.querySelectorAll('.toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.person === currentPerson);
+  });
+}
+
+function renderStations() {
+  const container = document.getElementById('tab-stations');
+  const p = ps();
+  container.innerHTML = STATIONS.map((s, i) => {
+    const done = p.completed.includes(i);
+    const selfPrayer = p.selfPrayers[i] || '';
+    const partnerPrayer = p.partnerPrayers[i] || '';
+    return `
+      <div class="card station-card" style="${done ? 'opacity:0.85' : ''}">
+        <div class="station-header">
+          <div class="station-num ${done ? 'done' : ''}">${done ? '✓' : i+1}</div>
+          <div class="station-info">
+            <h3>${s.name}</h3>
+            <div class="station-time">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              ${s.time}
+            </div>
+            <div class="station-purpose">${s.purpose}</div>
+            ${s.tags.length ? `<div class="station-tags">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>` : ''}
+            <div class="station-offer">${s.offer}</div>
+          </div>
+        </div>
+        <div class="prayer-section">
+          <button class="prayer-btn ${selfPrayer ? 'done' : ''}" onclick="openPrayer(${i}, 'self')">
+            <h4>💙 您的祈愿</h4>
+            <p>${selfPrayer || '点击写下您的祈愿...'}</p>
+          </button>
+          <button class="prayer-btn ${partnerPrayer ? 'done' : ''}" onclick="openPrayer(${i}, 'partner')">
+            <h4>💕 伴侣的祈愿</h4>
+            <p>${partnerPrayer || '点击写下伴侣的祈愿...'}</p>
+          </button>
+        </div>
+        <button class="complete-btn ${done ? 'done' : ''}" onclick="toggleComplete(${i})">
+          ${done ? '已完成本站' : '标记完成'}
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTimeline() {
+  const container = document.getElementById('tab-timeline');
+  container.innerHTML = STATIONS.map((s, i) => `
+    <div class="card">
+      <div class="tl-item">
+        <div class="tl-num">${i+1}</div>
+        <div class="tl-content">
+          <h3>${s.name}</h3>
+          <div class="tl-time">${s.time}</div>
+          <div class="tl-desc">${s.purpose}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateProgress() {
+  const p = ps();
+  const done = p.completed.length;
+  const total = STATIONS.length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progressPercent').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `已完成 ${done} / ${total} 站`;
+}
+
+// ─── ACTIONS ─────────────────────────────────────────
+function switchPerson(person) {
+  currentPerson = person;
+  saveState();
+  renderAll();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['stations','tips','timeline'][i] === tab);
+  });
+  document.getElementById('tab-stations').classList.toggle('hidden', tab !== 'stations');
+  document.getElementById('tab-tips').classList.toggle('hidden', tab !== 'tips');
+  document.getElementById('tab-timeline').classList.toggle('hidden', tab !== 'timeline');
+}
+
+function toggleComplete(idx) {
+  const p = ps();
+  const pos = p.completed.indexOf(idx);
+  if (pos >= 0) { p.completed.splice(pos, 1); }
+  else { p.completed.push(idx); p.completed.sort((a,b)=>a-b); }
+  saveState();
+  renderAll();
+  showToast(pos >= 0 ? '已取消完成' : '✅ 已标记完成！');
+}
+
+function openPrayer(idx, type) {
+  modalStationIdx = idx;
+  modalPrayerType = type;
+  const s = STATIONS[idx];
+  const p = ps();
+  const existing = type === 'self' ? (p.selfPrayers[idx] || '') : (p.partnerPrayers[idx] || '');
+  document.getElementById('modalTitle').textContent = type === 'self' ? '💙 您的祈愿' : '💕 伴侣的祈愿';
+  document.getElementById('modalStation').textContent = s.name + ' · ' + s.time;
+  document.getElementById('prayerText').value = existing;
+  document.getElementById('prayerModal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('prayerText').focus(), 100);
+}
+
+function closeModal() {
+  document.getElementById('prayerModal').classList.add('hidden');
+  modalStationIdx = null;
+  modalPrayerType = null;
+}
+
+function savePrayer() {
+  if (modalStationIdx === null) return;
+  const text = document.getElementById('prayerText').value.trim();
+  const p = ps();
+  if (modalPrayerType === 'self') p.selfPrayers[modalStationIdx] = text;
+  else p.partnerPrayers[modalStationIdx] = text;
+  saveState();
+  closeModal();
+  renderStations();
+  showToast('祈愿已保存 🙏');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => t.classList.add('hidden'), 2000);
+}
+
+// Handle modal overlay click
+document.getElementById('prayerModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ─── INIT ────────────────────────────────────────────
+renderAll();
+switchTab('stations');
+</script>
+</body>
+</html>
